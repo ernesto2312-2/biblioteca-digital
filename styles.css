@@ -1,0 +1,817 @@
+/* =====================================================================
+   styles.css — Estilos de la Biblioteca Digital
+   1) Variables de color (tema claro y oscuro)
+   2) Base  3) Cabecera y menú  4) Controles y botones  5) Tarjetas
+   6) Listas  7) Formulario  8) Modales  9) Animaciones  10) Responsive
+   ===================================================================== */
+
+/* ---------- 1) Variables: el tema se cambia con <html data-tema="..."> ---------- */
+:root {
+  color-scheme: light;
+  --fondo: #f4efe4;
+  --superficie: #fffdf8;
+  --superficie-2: #ebe4d3;
+  --texto: #1c2130;
+  --texto-suave: #4a5163;
+  --borde: #c9bfa6;
+  --sombra: 0 6px 18px rgba(40, 30, 10, 0.14);
+
+  --primario: #1d4bb8;
+  --primario-hover: #153a91;
+  --primario-texto: #ffffff;
+  --peligro: #a8231b;
+  --peligro-hover: #861a14;
+  --peligro-texto: #ffffff;
+  --enfoque: #1d4bb8;
+
+  --disponible-fondo: #dcf2e1;
+  --disponible-texto: #124c28;
+  --disponible-borde: #2e8b57;
+  --prestado-fondo: #fcebc4;
+  --prestado-texto: #5e3700;
+  --prestado-borde: #c27a00;
+  --tarjeta-prestada: #fff3d6;
+  --coleccion-fondo: #e8e0fa;
+  --coleccion-texto: #3e2275;
+  --coleccion-borde: #7a55c9;
+  --vencido-fondo: #fbdad7;
+  --vencido-texto: #70120d;
+  --vencido-borde: #c0392b;
+  --tarjeta-vencida: #fdeceb;
+  --alerta: #a8231b;
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --fondo: #11141c;
+  --superficie: #1a1f2c;
+  --superficie-2: #252c3d;
+  --texto: #e9ecf3;
+  --texto-suave: #b3bbcc;
+  --borde: #3b445a;
+  --sombra: 0 6px 18px rgba(0, 0, 0, 0.5);
+
+  --primario: #8fb0ff;
+  --primario-hover: #b0c7ff;
+  --primario-texto: #0a1230;
+  --peligro: #ff8f86;
+  --peligro-hover: #ffb0a9;
+  --peligro-texto: #2b0400;
+  --enfoque: #8fb0ff;
+
+  --disponible-fondo: #17402a;
+  --disponible-texto: #b9f0cb;
+  --disponible-borde: #4ec27f;
+  --prestado-fondo: #4a3410;
+  --prestado-texto: #fbdca0;
+  --prestado-borde: #e0a030;
+  --tarjeta-prestada: #2a2617;
+  --coleccion-fondo: #34285a;
+  --coleccion-texto: #d9ccff;
+  --coleccion-borde: #a58af0;
+  --vencido-fondo: #512220;
+  --vencido-texto: #ffc9c4;
+  --vencido-borde: #ff8f86;
+  --tarjeta-vencida: #2c1a1c;
+  --alerta: #ff8f86;
+}
+
+/* ---------- 2) Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important; /* el atributo hidden siempre gana */
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.25;
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+  margin-top: 1.5rem;
+}
+
+p {
+  margin: 0 0 0.5rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--enfoque);
+  outline-offset: 2px;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 2rem;
+}
+
+main:focus {
+  outline: none;
+}
+
+.salto {
+  position: absolute;
+  left: -999px;
+  top: 0.5rem;
+  background: var(--primario);
+  color: var(--primario-texto);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  z-index: 100;
+}
+
+.salto:focus {
+  left: 0.5rem;
+}
+
+.ayuda {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.vacio {
+  padding: 1rem;
+  border: 2px dashed var(--borde);
+  border-radius: 10px;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.pie {
+  text-align: center;
+  color: var(--texto-suave);
+  padding: 1.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- 3) Cabecera y menú (Flexbox) ---------- */
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.marca h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu a {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  color: var(--texto);
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu a:hover {
+  background: var(--superficie-2);
+}
+
+.menu a.activo {
+  background: var(--primario);
+  color: var(--primario-texto);
+}
+
+.saludo {
+  color: var(--texto-suave);
+  font-weight: 600;
+  padding: 0 0.5rem;
+}
+
+.saludo:empty {
+  display: none;
+}
+
+/* ---------- 4) Controles, filtros y botones ---------- */
+.controles {
+  display: grid; /* Grid: columnas que se adaptan al ancho */
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--texto-suave);
+}
+
+[aria-invalid="true"] {
+  border-color: var(--alerta);
+  box-shadow: 0 0 0 2px var(--alerta);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.filtro {
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.filtro:hover {
+  background: var(--superficie-2);
+}
+
+.filtro[aria-pressed="true"] {
+  background: var(--primario);
+  border-color: var(--primario);
+  color: var(--primario-texto);
+}
+
+.contador {
+  color: var(--texto-suave);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.boton {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--primario);
+  border-radius: 8px;
+  background: var(--primario);
+  color: var(--primario-texto);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.boton:hover:not(:disabled) {
+  background: var(--primario-hover);
+  border-color: var(--primario-hover);
+}
+
+.boton:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.boton:disabled {
+  background: var(--superficie-2);
+  border-color: var(--borde);
+  color: var(--texto-suave);
+  cursor: not-allowed;
+}
+
+.boton--secundario {
+  background: transparent;
+  color: var(--texto);
+  border-color: var(--borde);
+}
+
+.boton--secundario:hover:not(:disabled) {
+  background: var(--superficie-2);
+  border-color: var(--texto-suave);
+}
+
+.boton--peligro {
+  background: var(--peligro);
+  border-color: var(--peligro);
+  color: var(--peligro-texto);
+}
+
+.boton--peligro:hover:not(:disabled) {
+  background: var(--peligro-hover);
+  border-color: var(--peligro-hover);
+}
+
+.boton--peligro-suave {
+  background: transparent;
+  color: var(--alerta);
+  border-color: var(--alerta);
+}
+
+.boton--peligro-suave:hover:not(:disabled) {
+  background: var(--tarjeta-vencida);
+  border-color: var(--alerta);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---------- 5) Tarjetas (Grid) ---------- */
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left-width: 8px;
+  border-radius: 12px;
+  /* Transición: al pasar el cursor la tarjeta sube y se le pone sombra */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra);
+}
+
+.tarjeta--disponible {
+  border-left-color: var(--disponible-borde);
+}
+
+.tarjeta--coleccion {
+  border-left-color: var(--coleccion-borde);
+  border-left-style: double;
+}
+
+/* Las tarjetas prestadas se distinguen: fondo cálido y borde de otro color */
+.tarjeta--prestado {
+  background: var(--tarjeta-prestada);
+  border-color: var(--prestado-borde);
+  border-left-color: var(--prestado-borde);
+}
+
+.tarjeta--vencido {
+  background: var(--tarjeta-vencida);
+  border-color: var(--vencido-borde);
+  border-left-color: var(--vencido-borde);
+}
+
+.tarjeta__cabecera {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tarjeta__titulo {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.etiqueta--disponible,
+.etiqueta--exito {
+  background: var(--disponible-fondo);
+  color: var(--disponible-texto);
+}
+
+.etiqueta--prestado,
+.etiqueta--aviso {
+  background: var(--prestado-fondo);
+  color: var(--prestado-texto);
+}
+
+.etiqueta--coleccion {
+  background: var(--coleccion-fondo);
+  color: var(--coleccion-texto);
+}
+
+.etiqueta--vencido {
+  background: var(--vencido-fondo);
+  color: var(--vencido-texto);
+}
+
+.datos {
+  margin: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.dato {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.dato dt {
+  font-weight: 700;
+}
+
+.dato dt::after {
+  content: ":";
+}
+
+.dato dd {
+  margin: 0;
+  color: var(--texto-suave);
+}
+
+.tarjeta__comentario {
+  font-style: italic;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.tarjeta__prestamo p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.texto-alerta {
+  color: var(--alerta);
+  font-weight: 700;
+}
+
+.tarjeta__acciones {
+  margin-top: auto; /* empuja los botones al fondo de la tarjeta */
+  padding-top: 0.4rem;
+}
+
+/* ---------- 6) Listas (préstamos activos e historial) y resumen ---------- */
+.lista {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lista--compacta {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.5rem;
+}
+
+.lista--compacta li {
+  padding: 0.5rem 0.8rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+}
+
+.item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 8px solid var(--disponible-borde);
+  border-radius: 10px;
+  transition: box-shadow 0.2s ease;
+}
+
+.item:hover {
+  box-shadow: var(--sombra);
+}
+
+.item--vencido {
+  background: var(--tarjeta-vencida);
+  border-color: var(--vencido-borde);
+  border-left-color: var(--vencido-borde);
+}
+
+.item--retraso {
+  border-left-color: var(--prestado-borde);
+}
+
+.item__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.item__titulo {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.item__info p {
+  margin: 0;
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.cifra {
+  padding: 1rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.cifra dt {
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+
+.cifra dd {
+  margin: 0;
+  font-family: "Iowan Old Style", Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.ajuste {
+  max-width: 480px;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+/* ---------- 7) Formulario y mensajes ---------- */
+.formulario {
+  display: grid;
+  gap: 1rem;
+  max-width: 560px;
+}
+
+.campo--casilla {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.6rem;
+}
+
+.campo--casilla .error {
+  grid-column: 1 / -1;
+}
+
+input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--primario);
+}
+
+.error {
+  margin: 0;
+  color: var(--alerta);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.error:empty {
+  display: none;
+}
+
+.mensaje {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border-left: 8px solid;
+  font-weight: 600;
+}
+
+.mensaje:empty {
+  display: none;
+}
+
+.mensaje--exito {
+  background: var(--disponible-fondo);
+  color: var(--disponible-texto);
+  border-color: var(--disponible-borde);
+}
+
+.mensaje--aviso {
+  background: var(--prestado-fondo);
+  color: var(--prestado-texto);
+  border-color: var(--prestado-borde);
+}
+
+.mensaje--error {
+  background: var(--vencido-fondo);
+  color: var(--vencido-texto);
+  border-color: var(--vencido-borde);
+}
+
+/* ---------- 8) Modales ---------- */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(10, 12, 20, 0.6);
+  animation: aparecer-fondo 0.2s ease;
+}
+
+.modal {
+  width: 100%;
+  max-width: 440px;
+  padding: 1.5rem;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: var(--sombra);
+  animation: aparecer-modal 0.25s ease;
+}
+
+.modal h2 {
+  font-size: 1.4rem;
+}
+
+.modal .acciones {
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* ---------- 9) Animaciones ---------- */
+/* Cada vez que una vista deja de estar oculta, esta animación se repite */
+.vista {
+  animation: aparecer-vista 0.4s ease;
+}
+
+@keyframes aparecer-vista {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes aparecer-fondo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes aparecer-modal {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Accesibilidad: quien pide menos movimiento en su sistema, no lo recibe */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- 10) Diseño responsivo ---------- */
+@media (max-width: 860px) {
+  .controles {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .campo--ancho {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .cabecera {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu {
+    width: 100%;
+  }
+
+  .menu li {
+    flex: 1 1 calc(50% - 0.35rem);
+  }
+
+  .menu a {
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  .controles {
+    grid-template-columns: 1fr;
+  }
+
+  .rejilla {
+    grid-template-columns: 1fr;
+  }
+
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
